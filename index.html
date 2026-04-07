@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CS2 Wingman Loadout Randomizer</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+    <section class="hero">
+      <h1>CS2 Wingman Loadout Randomizer</h1>
+      <p>Roll one pistol, one mid-tier, one rifle, and one grenade for each side.</p>
+
+      <div class="actions">
+        <button id="generateBtn" class="primary-btn">Generate Loadouts</button>
+        <button id="copyBtn" class="secondary-btn">Copy Result</button>
+      </div>
+    </section>
+
+    <section class="teams">
+      <article class="team-card ct-card">
+        <div class="team-header">
+          <h2>Counter-Terrorists</h2>
+          <span class="team-badge ct-badge">CT</span>
+        </div>
+        <div id="ct-loadout" class="loadout-grid"></div>
+      </article>
+
+      <article class="team-card t-card">
+        <div class="team-header">
+          <h2>Terrorists</h2>
+          <span class="team-badge t-badge">T</span>
+        </div>
+        <div id="t-loadout" class="loadout-grid"></div>
+      </article>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
