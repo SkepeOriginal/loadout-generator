@@ -1,90 +1,14 @@
-const pools = {
-  ct: {
-    pistol: [
-      { name: "USP-S", image: "assets/usp_s.png" },
-      { name: "P2000", image: "assets/p2000.png" },
-      { name: "Dual Berettas", image: "assets/dual_berettas.png" },
-      { name: "Five-SeveN", image: "assets/five_seven.png" },
-      { name: "CZ75-Auto", image: "assets/cz75_auto.png" },
-      { name: "Desert Eagle", image: "assets/desert_eagle.png" },
-      { name: "R8 Revolver", image: "assets/r8_revolver.png" }
-    ],
-    midTier: [
-      { name: "MP9", image: "assets/mp9.png" },
-      { name: "MP7", image: "assets/mp7.png" },
-      { name: "UMP-45", image: "assets/ump_45.png" },
-      { name: "P90", image: "assets/p90.png" },
-      { name: "Nova", image: "assets/nova.png" },
-      { name: "XM1014", image: "assets/xm1014.png" },
-      { name: "MAG-7", image: "assets/mag_7.png" }
-    ],
-    rifle: [
-      { name: "FAMAS", image: "assets/famas.png" },
-      { name: "M4A4", image: "assets/m4a4.png" },
-      { name: "M4A1-S", image: "assets/m4a1_s.png" },
-      { name: "AUG", image: "assets/aug.png" },
-      { name: "SSG 08", image: "assets/ssg_08.png" },
-      { name: "AWP", image: "assets/awp.png" },
-      { name: "SCAR-20", image: "assets/scar_20.png" }
-    ],
-    grenade: [
-      { name: "Flashbang", image: "assets/flashbang.png" },
-      { name: "HE Grenade", image: "assets/he_grenade.png" },
-      { name: "Smoke Grenade", image: "assets/smoke_grenade.png" },
-      { name: "Incendiary Grenade", image: "assets/incendiary_grenade.png" },
-      { name: "Decoy Grenade", image: "assets/decoy_grenade.png" }
-    ]
-  },
-  t: {
-    pistol: [
-      { name: "Glock-18", image: "assets/glock_18.png" },
-      { name: "Dual Berettas", image: "assets/dual_berettas.png" },
-      { name: "P250", image: "assets/p250.png" },
-      { name: "Tec-9", image: "assets/tec_9.png" },
-      { name: "CZ75-Auto", image: "assets/cz75_auto.png" },
-      { name: "Desert Eagle", image: "assets/desert_eagle.png" },
-      { name: "R8 Revolver", image: "assets/r8_revolver.png" }
-    ],
-    midTier: [
-      { name: "MAC-10", image: "assets/mac_10.png" },
-      { name: "MP7", image: "assets/mp7.png" },
-      { name: "UMP-45", image: "assets/ump_45.png" },
-      { name: "P90", image: "assets/p90.png" },
-      { name: "Nova", image: "assets/nova.png" },
-      { name: "XM1014", image: "assets/xm1014.png" },
-      { name: "Sawed-Off", image: "assets/sawed_off.png" }
-    ],
-    rifle: [
-      { name: "Galil AR", image: "assets/galil_ar.png" },
-      { name: "AK-47", image: "assets/ak_47.png" },
-      { name: "SG 553", image: "assets/sg_553.png" },
-      { name: "SSG 08", image: "assets/ssg_08.png" },
-      { name: "AWP", image: "assets/awp.png" },
-      { name: "G3SG1", image: "assets/g3sg1.png" }
-    ],
-    grenade: [
-      { name: "Flashbang", image: "assets/flashbang.png" },
-      { name: "HE Grenade", image: "assets/he_grenade.png" },
-      { name: "Smoke Grenade", image: "assets/smoke_grenade.png" },
-      { name: "Molotov", image: "assets/molotov.png" },
-      { name: "Decoy Grenade", image: "assets/decoy_grenade.png" }
-    ]
-  }
-};
-
-const categoryLabels = {
-  pistol: "Pistol",
-  midTier: "Mid-Tier",
-  rifle: "Rifle",
-  grenade: "Grenade"
-};
-
 const ctContainer = document.getElementById("ct-loadout");
 const tContainer = document.getElementById("t-loadout");
 const generateBtn = document.getElementById("generateBtn");
 const copyBtn = document.getElementById("copyBtn");
+const toggleFiltersBtn = document.getElementById("toggleFiltersBtn");
+const clearBansBtn = document.getElementById("clearBansBtn");
+const filtersPanel = document.getElementById("filtersPanel");
+const filterGrid = document.getElementById("filterGrid");
 
 let currentRoll = null;
+const bannedItems = loadBans();
 
 function randomItem(items) {
   return items[Math.floor(Math.random() * items.length)];
@@ -93,13 +17,21 @@ function randomItem(items) {
 function createCard(label, item) {
   return `
     <div class="loadout-item">
-      <img
-        class="weapon-image"
-        src="${item.image}"
-        alt="${item.name}"
-        onerror="this.style.display='none'; this.nextElementSibling.hidden = false;"
-      />
-      <div class="weapon-fallback" hidden>${item.name}</div>
+      ${
+        item.image
+          ? `
+            <img
+              class="weapon-image"
+              src="${item.image}"
+              alt="${item.name}"
+              onerror="this.style.display='none'; this.nextElementSibling.hidden = false;"
+            />
+            <div class="weapon-fallback" hidden>${item.name}</div>
+          `
+          : `
+            <div class="weapon-fallback">${item.name}</div>
+          `
+      }
 
       <div class="item-meta">
         <span class="item-label">${label}</span>
@@ -109,15 +41,55 @@ function createCard(label, item) {
   `;
 }
 
-function rollTeam(teamKey) {
-  const teamPool = pools[teamKey];
+function normalizeName(name) {
+  return name.toLowerCase().trim();
+}
 
-  return {
-    pistol: randomItem(teamPool.pistol),
-    midTier: randomItem(teamPool.midTier),
-    rifle: randomItem(teamPool.rifle),
-    grenade: randomItem(teamPool.grenade)
-  };
+function getBanKey(teamKey, category, itemName) {
+  return `${teamKey}::${category}::${normalizeName(itemName)}`;
+}
+
+function loadBans() {
+  try {
+    const saved = JSON.parse(localStorage.getItem("wingmanBans") || "[]");
+    return new Set(saved);
+  } catch {
+    return new Set();
+  }
+}
+
+function saveBans() {
+  localStorage.setItem("wingmanBans", JSON.stringify([...bannedItems]));
+}
+
+function isBanned(teamKey, category, itemName) {
+  return bannedItems.has(getBanKey(teamKey, category, itemName));
+}
+
+function getAvailableItems(teamKey, category) {
+  return pools[teamKey][category].filter(
+    item => !isBanned(teamKey, category, item.name)
+  );
+}
+
+function rollTeam(teamKey) {
+  const result = {};
+
+  for (const category of Object.keys(pools[teamKey])) {
+    const availableItems = getAvailableItems(teamKey, category);
+
+    if (availableItems.length === 0) {
+      result[category] = {
+        name: "No items available",
+        image: ""
+      };
+      continue;
+    }
+
+    result[category] = randomItem(availableItems);
+  }
+
+  return result;
 }
 
 function renderTeam(container, teamRoll) {
@@ -136,10 +108,71 @@ function generateLoadouts() {
   renderTeam(tContainer, currentRoll.t);
 }
 
+function buildFilters() {
+  filterGrid.innerHTML = ["ct", "t"]
+    .map(teamKey => {
+      const teamName = teamKey === "ct" ? "CT bans" : "T bans";
+
+      const sections = Object.entries(pools[teamKey])
+        .map(([category, items]) => {
+          const chips = items
+            .map(item => {
+              const bannedClass = isBanned(teamKey, category, item.name) ? "banned" : "";
+
+              return `
+                <button
+                  type="button"
+                  class="filter-chip ${bannedClass}"
+                  data-team="${teamKey}"
+                  data-category="${category}"
+                  data-name="${item.name}"
+                >
+                  ${item.name}
+                </button>
+              `;
+            })
+            .join("");
+
+          return `
+            <div class="filter-section">
+              <h3>${categoryLabels[category]}</h3>
+              <div class="filter-list">${chips}</div>
+            </div>
+          `;
+        })
+        .join("");
+
+      return `
+        <div class="filter-column">
+          <span class="eyebrow">${teamName}</span>
+          <div class="filter-stack">${sections}</div>
+        </div>
+      `;
+    })
+    .join("");
+
+  filterGrid.querySelectorAll(".filter-chip").forEach(chip => {
+    chip.addEventListener("click", () => {
+      const team = chip.dataset.team;
+      const category = chip.dataset.category;
+      const name = chip.dataset.name;
+      const key = getBanKey(team, category, name);
+
+      if (bannedItems.has(key)) {
+        bannedItems.delete(key);
+      } else {
+        bannedItems.add(key);
+      }
+
+      saveBans();
+      buildFilters();
+      generateLoadouts();
+    });
+  });
+}
+
 async function copyLoadouts() {
-  if (!currentRoll) {
-    return;
-  }
+  if (!currentRoll) return;
 
   const formatTeam = (name, roll) => {
     return `${name}
@@ -167,5 +200,19 @@ ${formatTeam("T", currentRoll.t)}`;
   }
 }
 
+toggleFiltersBtn.addEventListener("click", () => {
+  filtersPanel.classList.toggle("hidden");
+});
+
+clearBansBtn.addEventListener("click", () => {
+  bannedItems.clear();
+  saveBans();
+  buildFilters();
+  generateLoadouts();
+});
+
 generateBtn.addEventListener("click", generateLoadouts);
 copyBtn.addEventListener("click", copyLoadouts);
+
+buildFilters();
+generateLoadouts();

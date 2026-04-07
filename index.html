@@ -7,36 +7,76 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <div class="page-glow page-glow-left"></div>
+  <div class="page-glow page-glow-right"></div>
+
   <main class="app">
-    <section class="hero">
-      <h1>CS2 Wingman Loadout Randomizer</h1>
-      <p>Roll one pistol, one mid-tier, one rifle, and one grenade for each side.</p>
+    <section class="hero glass-panel">
+      <div class="hero-text">
+        <span class="eyebrow">Wingman Challenge Tool</span>
+        <h1>CS2 Wingman Loadout Randomizer</h1>
+        <p>
+          Roll one pistol, one mid-tier, one rifle, and one grenade for each side.
+          Ban anything you do not want in the pool.
+        </p>
+      </div>
 
       <div class="actions">
         <button id="generateBtn" class="primary-btn">Generate Loadouts</button>
         <button id="copyBtn" class="secondary-btn">Copy Result</button>
+        <button id="toggleFiltersBtn" class="ghost-btn">Toggle Bans</button>
       </div>
     </section>
 
+    <section id="filtersPanel" class="filters-panel glass-panel hidden">
+      <div class="filters-header">
+        <div>
+          <span class="eyebrow">Filter System</span>
+          <h2>Ban items from the roll pool</h2>
+        </div>
+
+        <div class="filter-actions">
+          <button id="clearBansBtn" class="danger-btn">Clear All Bans</button>
+        </div>
+      </div>
+
+      <div class="filter-grid" id="filterGrid"></div>
+    </section>
+
     <section class="teams">
-      <article class="team-card ct-card">
+      <article class="team-card glass-panel ct-card">
+        <div class="team-background team-background-ct"></div>
+        <div class="team-overlay"></div>
+
         <div class="team-header">
-          <h2>Counter-Terrorists</h2>
+          <div>
+            <span class="eyebrow">Counter-Terrorists</span>
+            <h2>CT Loadout</h2>
+          </div>
           <span class="team-badge ct-badge">CT</span>
         </div>
+
         <div id="ct-loadout" class="loadout-grid"></div>
       </article>
 
-      <article class="team-card t-card">
+      <article class="team-card glass-panel t-card">
+        <div class="team-background team-background-t"></div>
+        <div class="team-overlay"></div>
+
         <div class="team-header">
-          <h2>Terrorists</h2>
+          <div>
+            <span class="eyebrow">Terrorists</span>
+            <h2>T Loadout</h2>
+          </div>
           <span class="team-badge t-badge">T</span>
         </div>
+
         <div id="t-loadout" class="loadout-grid"></div>
       </article>
     </section>
   </main>
 
+  <script src="data.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
