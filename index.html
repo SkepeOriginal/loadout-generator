@@ -16,16 +16,22 @@
         <span class="eyebrow">Wingman Challenge Tool</span>
         <h1>CS2 Wingman Loadout Randomizer</h1>
         <p>
-          Roll one pistol, one mid-tier, one rifle, and one grenade for each side.
-          Ban anything you do not want in the pool.
+          Generate a standard roll, generate a full match pool, or roll only from the saved match pool.
         </p>
       </div>
 
       <div class="actions">
-        <button id="generateBtn" class="primary-btn">Generate Loadouts</button>
+        <button id="generateBtn" class="primary-btn">Generate Standard Roll</button>
+        <button id="generateFullBtn" class="accent-btn">Generate Match Pool</button>
+        <button id="rollFromPoolBtn" class="pool-btn">Roll From Pool</button>
         <button id="copyBtn" class="secondary-btn">Copy Result</button>
         <button id="toggleFiltersBtn" class="ghost-btn">Toggle Bans</button>
       </div>
+    </section>
+
+    <section class="pool-status glass-panel">
+      <span class="eyebrow">Saved Pool Status</span>
+      <p id="poolStatusText">No saved match pool yet.</p>
     </section>
 
     <section id="filtersPanel" class="filters-panel glass-panel hidden">
