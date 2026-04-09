@@ -924,3 +924,134 @@ button:active {
     opacity: 1;
   }
 }
+
+.case-roll-window {
+  position: relative;
+  height: 58px;
+  overflow: hidden;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.case-roll-window.multi {
+  height: 290px; /* 58 * 5 */
+}
+
+.case-roll-track {
+  display: flex;
+  flex-direction: column;
+  transform: translateY(0);
+  transition: transform 1.1s cubic-bezier(0.16, 0.84, 0.24, 1);
+}
+
+.case-roll-window::before,
+.case-roll-window::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 14px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.case-roll-window::before {
+  top: 0;
+  background: linear-gradient(to bottom, rgba(7, 17, 31, 0.95), rgba(7, 17, 31, 0));
+}
+
+.case-roll-window::after {
+  bottom: 0;
+  background: linear-gradient(to top, rgba(7, 17, 31, 0.95), rgba(7, 17, 31, 0));
+}
+
+.case-roll-center-line {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 42px;
+  border: 1px solid rgba(34, 197, 94, 0.45);
+  border-radius: 10px;
+  box-shadow: 0 0 14px rgba(34, 197, 94, 0.12);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.case-roll-window.multi .case-roll-center-line {
+  top: 0;
+  bottom: 0;
+  transform: none;
+  height: auto;
+  border-radius: 14px;
+}
+
+.case-roll-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 58px;
+  padding: 8px 10px;
+}
+
+.case-roll-item img {
+  width: 54px;
+  height: 30px;
+  object-fit: contain;
+  flex-shrink: 0;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.3));
+}
+
+.case-roll-item-name {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #f1f5f9;
+  line-height: 1.2;
+}
+
+.weapon-entry.pool-scan {
+  background: linear-gradient(135deg, rgba(96, 165, 250, 0.16), rgba(139, 92, 246, 0.12));
+  border-color: rgba(96, 165, 250, 0.45);
+  box-shadow: 0 0 16px rgba(96, 165, 250, 0.14);
+  transform: translateX(2px);
+}
+
+.weapon-entry.selected {
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(74, 222, 128, 0.12));
+  border-color: rgba(74, 222, 128, 0.65);
+  box-shadow:
+    0 0 0 1px rgba(74, 222, 128, 0.2),
+    0 0 20px rgba(34, 197, 94, 0.15);
+  opacity: 1;
+}
+
+.weapon-entry.dimmed {
+  opacity: 0.35;
+}
+
+.weapon-entry.select-flash {
+  animation: selectFlash 0.4s ease;
+}
+
+.case-roll-window {
+  position: relative;
+  height: 58px;
+  overflow: hidden;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.case-roll-window.multi {
+  height: 290px;
+}
+
+.case-roll-window.multi .case-roll-center-line {
+  top: 0;
+  bottom: 0;
+  transform: none;
+  height: auto;
+  border-radius: 14px;
+}
